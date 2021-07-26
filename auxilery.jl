@@ -1,14 +1,11 @@
 using StatsPlots, StatsBase
-function viz(values,title="",xlabel="",ylabel="Frequency")
+function viz(values,label="",title="",xlabel="",ylabel="Frequency")
     datamap = countmap(values)
     s = sort(collect(keys(datamap)))
-    bar((x -> datamap[x]/length(values)).(s),xticks=(1:length(s), s),title=title,xlabel=xlabel,ylabel=ylabel)
+    bar((x -> datamap[x]/length(values)).(s),xticks=(1:length(s), s),title=title,xlabel=xlabel,ylabel=ylabel,label=hcat(label))
 end
 
 function groupedviz(values,names,cats,num_groups,title="",xlabel="",ylabel="Frequency",legendtitle="")
-    datamap1 = countmap(y1)
-    datamap2 = countmap(y2)
-    datamap3 = countmap(y3)
     N=0
     counts=zeros(num_groups,2)
     i::Int32=1
