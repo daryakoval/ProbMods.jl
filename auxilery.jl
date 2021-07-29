@@ -1,22 +1,30 @@
 using StatsPlots, StatsBase
-function viz(values,label="",title="",xlabel="",ylabel="Frequency")
-    datamap = countmap(values)
+function viz(values,label="",counted=false,sum=0,title="",xlabel="",ylabel="Frequency")
+    if !counted
+        datamap = countmap(values)
+        normalizer=length(values)
+    else
+        datamap = values
+        normalizer = sum
+    end
     s = sort(collect(keys(datamap)))
-    bar((x -> datamap[x]/length(values)).(s),xticks=(1:length(s), s),title=title,xlabel=xlabel,ylabel=ylabel,label=hcat(label))
+    bar((x -> datamap[x]/normalizer).(s),xticks=(1:length(s), s),title=title,xlabel=xlabel,ylabel=ylabel,label=hcat(label),ygridalpha = 0.1)
 end
 
-function groupedviz(values,names,cats,num_groups,title="",xlabel="",ylabel="Frequency",legendtitle="")
-    N=0
+function groupedviz(values,names,cats,num_groups,title="",xlabel="",ylabel="Frequency",legendtitle="",normalizer=0)
+    normalizer_flag = normalizer != 0
     counts=zeros(num_groups,2)
     i::Int32=1
     for value in values
         datamap=countmap(value)
-        N=length(value)
+        if !normalizer_flag
+            normalizer=length(value)
+        end
         for item in datamap
             if item.first == cats[:1]
-            counts[i,1]=item.second/N
+            counts[i,1]=item.second/normalizer
             else
-            counts[i,2]=item.second/N
+            counts[i,2]=item.second/normalizer
             end
         end
         i=i+1
