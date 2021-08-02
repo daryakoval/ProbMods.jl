@@ -34,9 +34,3 @@ function groupedviz(values,names,cats,num_groups,title="",xlabel="",ylabel="Freq
             title =title, bar_width = 0.67,legendtitle = legendtitle,
             lw = 0, framestyle = :box)
 end
-
-function toBinary(u)
-    res =BitVector(undef, sizeof(u)*8)
-    res.chunks[1] = u%UInt64
-    res
-    end
